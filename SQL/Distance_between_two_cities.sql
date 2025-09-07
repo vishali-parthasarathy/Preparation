@@ -19,3 +19,10 @@
 -- | Chennai   | Pune        | 400      |
 
 Solution:
+With CTE as
+( SELECT * ,ROW_NUMBER() OVER() as id FROM SOURCE_DEST_TABLE)
+
+SELECT T1.* 
+  FROM CTE T1 
+  JOIN
+  CTE T2 ON T1.SOURCE=T2.DESTINATION AND T1.ID<T2.ID;
