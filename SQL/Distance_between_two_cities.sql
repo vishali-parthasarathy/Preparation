@@ -18,6 +18,9 @@
 -- | Mumbai    | Delhi       | 400      |
 -- | Chennai   | Pune        | 400      |
 
+--Approach
+-- Used SELF JOIN to solve the problem because the source and target is having same values.
+
 Solution:
 With CTE as
 ( SELECT * ,ROW_NUMBER() OVER() as id FROM SOURCE_DEST_TABLE)
