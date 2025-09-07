@@ -21,3 +21,26 @@
 
 
 Solution:
+  
+WITH RECURSIVE cte AS (
+  SELECT 1 AS iter, MAX(idx) OVER() AS max_idx
+  FROM cte_values
+  WHERE idx = 1
+
+  UNION
+
+  SELECT cv.*, (iter + 1) AS iter, MAX(cv.idx) OVER() AS max_idx
+  FROM cte
+  JOIN cte_values cv ON cv.idx BETWEEN max_idx + 1 AND max_idx + iter + 1
+),
+
+cte_values AS (
+  SELECT x.*
+  FROM arbitrary_values
+  CROSS JOIN UNNEST(string_to_array(val, ',')) WITH ORDINALITY AS x(val, idx)
+)
+
+SELECT iter AS grp, STRING_AGG(val, ',') AS val
+FROM cte
+GROUP BY iter
+ORDER BY iter;
